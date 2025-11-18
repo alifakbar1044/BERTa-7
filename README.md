@@ -3,6 +3,8 @@ Analisis Sentimen Ulasan Pengguna Aplikasi Media Sosial di Google Play Store den
 
 
 Panduan Menjalankan Aplikasi BERTa-7 (Streamlit) di Windows
+
+
 1️⃣ Persiapan Lingkungan
 
 Pastikan Python sudah terinstall.

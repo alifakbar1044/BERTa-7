@@ -1,0 +1,15 @@
+streamlit
+pandas
+numpy
+scikit-learn
+plotly
+folium
+streamlit-folium
+geopandas
+matplotlib
+seaborn
+fpdf2
+openpyxl
+streamlit_option_menu
+typing
+kneed

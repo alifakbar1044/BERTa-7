@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import torch
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
-from google_play_scraper import Sort, reviews
+from google_play_scraper import Sort, reviews, app
 import matplotlib.pyplot as plt
 from wordcloud import WordCloud
 from sklearn.model_selection import train_test_split
@@ -47,18 +47,26 @@ def extract_app_id(url):
 # HALAMAN PREDIKSI
 # -----------------------------
 def render_predict_page():
-    st.title("📌 Prediksi Sentimen Ulasan Aplikasi Media Sosial")
+    st.title("📌 Analisis Sentimen Ulasan Aplikasi Media Sosial")
     st.markdown("Gunakan fitur ini untuk menganalisis sentimen ulasan menggunakan model **IndoBERTa**.")
 
     link = st.text_input("Masukkan link Google Play / package id")
     jumlah = st.slider("Jumlah ulasan", 50, 1000, 300)
     
-    if st.button("Prediksi"):
+    if st.button("Analisis"):
         if not link:
             st.warning("Masukkan link terlebih dahulu!")
             return
         
         app_id = extract_app_id(link)
+        
+        # Ambil info aplikasi (nama + ikon)
+        with st.spinner("Mengambil info aplikasi..."):
+            info_app = app(app_id, lang="id", country="id")
+            st.image(info_app['icon'], width=64)
+            st.markdown(f"### {info_app['title']}")
+
+        # Ambil review
         with st.spinner("Mengambil ulasan..."):
             df = scrap_review(app_id, jumlah)
         st.success(f"Berhasil mengambil {len(df)} ulasan!")
@@ -72,8 +80,10 @@ def render_predict_page():
         st.subheader("📊 Distribusi Label")
         fig_map, ax_map = plt.subplots(figsize=(5,3))
         df["sentiment"].value_counts().plot(kind="bar", ax=ax_map, color=["red","gray","green"])
-        ax_map.set_xlabel("Label")
-        ax_map.set_ylabel("Jumlah")
+        ax_map.set_xlabel("Label", fontsize=4)
+        ax_map.set_ylabel("Jumlah", fontsize=4)
+        ax_map.tick_params(axis='x', labelsize=4)
+        ax_map.tick_params(axis='y', labelsize=4)
         fig_map.tight_layout()
         st.pyplot(fig_map)
 
@@ -86,8 +96,10 @@ def render_predict_page():
         st.subheader("📊 Distribusi Label Setelah Oversampling")
         fig_over, ax_over = plt.subplots(figsize=(5,3))
         train_res["label"].value_counts().plot(kind="bar", ax=ax_over, color=["red","gray","green"])
-        ax_over.set_xlabel("Label")
-        ax_over.set_ylabel("Jumlah")
+        ax_over.set_xlabel("Label", fontsize=4)
+        ax_over.set_ylabel("Jumlah", fontsize=4)
+        ax_over.tick_params(axis='x', labelsize=4)
+        ax_over.tick_params(axis='y', labelsize=4)
         fig_over.tight_layout()
         st.pyplot(fig_over)
 
@@ -108,7 +120,9 @@ def render_predict_page():
         sns.heatmap(cm, annot=True, fmt="d", cmap="Blues",
                     xticklabels=["Negative","Neutral","Positive"],
                     yticklabels=["Negative","Neutral","Positive"], ax=ax_cm)
-        ax_cm.set_xlabel("Prediksi")
-        ax_cm.set_ylabel("Aktual")
+        ax_cm.set_xlabel("Prediksi", fontsize=4)
+        ax_cm.set_ylabel("Aktual", fontsize=4)
+        ax_cm.tick_params(axis='x', labelsize=4)
+        ax_cm.tick_params(axis='y', labelsize=4)
         fig_cm.tight_layout()
         st.pyplot(fig_cm)

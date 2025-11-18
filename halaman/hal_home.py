@@ -25,7 +25,7 @@ def render_home_page():
             st.session_state['selected_page_index'] = 1
             st.rerun()
     with col_btn2:
-        if st.button("🚀 Mulai Prediksi/Clustering", type="primary", use_container_width=True):
+        if st.button("🚀 Mulai Analisis", type="primary", use_container_width=True):
             st.session_state['selected_page_index'] = 2
             st.rerun()
     

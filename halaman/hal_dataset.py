@@ -5,7 +5,7 @@ from modules.konten import penjelasan_dataset
 
 def render_dataset_page():
     with st.spinner("Memuat dataset..."):
-        st.title("Tampilan Dataset Ulasan Aplikasi Media Sosial")
+        st.title("Tampilan Dataset Ulasan Aplikasi Di Google Play Store")
         st.markdown("Dataset bersumber dari Google Play Store, berisi ulasan pengguna beserta metadata.")
 
         path = "googleplaystore.csv"  # pastikan file ini ada di folder proyek

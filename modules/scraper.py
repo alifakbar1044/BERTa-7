@@ -20,6 +20,12 @@ def scrape_google_play(app_ids, count=200):
             print(f"Gagal mengambil {app_id}: {e}")
             
     df = pd.DataFrame(all_reviews)
-    if not df.empty:
-        df = df[['userName', 'content', 'score', 'at', 'source_app']]
+    expected_cols = ['userName', 'content', 'score', 'at', 'source_app']
+    
+    if df.empty:
+        # Jika kosong, kembalikan dataframe kosong TAPI dengan kolom yang benar
+        return pd.DataFrame(columns=expected_cols)
+    available_cols = [c for c in expected_cols if c in df.columns]
+    df = df[available_cols]
+    
     return df

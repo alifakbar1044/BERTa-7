@@ -67,7 +67,7 @@ selected = option_menu(
             "text-align": "center",
             "margin": "0px",
         },
-        "nav-link-selected": {"background-color": "#001b87ff", "color": "white"},
+        "nav-link-selected": {"background-color": "#354687ff", "color": "white"},
     },
     default_index=st.session_state["selected_page_index"],
 )

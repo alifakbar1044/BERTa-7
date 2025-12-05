@@ -33,11 +33,10 @@ def render_home_page():
     
     st.markdown("""
     <div style="background-color:#E0F7FA; padding:20px; border-radius:10px; text-align:center; box-shadow: 2px 2px 5px #aaaaaa;">
-        <h3>📖 Manual Book</h3>
-        <p>Apabila membutuhkan panduan lebih lanjut, klik tombol dibawah.</p>
-        <a href="https://drive.google.com/file/d/14LN6MrMFD35S1m-PRDMP186J7Dki0mZ0/view?usp=sharing" target="_blank">
-        <button style="background-color:#00796B; color:white; padding:10px 20px; border:none; border-radius:5px; cursor:pointer;">
-            Buka Manual Book
+        <h3>📖 Artikel </h3>
+        <a href=# target="_blank">
+        <button style="background-color:#354687ff; color:white; padding:10px 20px; border:none; border-radius:5px; cursor:pointer;">
+            Buka Artikel
         </button>
         </a>
     </div>

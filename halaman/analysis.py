@@ -19,17 +19,17 @@ def render_analysis_page():
     # INPUT DATA
     st.header("1. Konfigurasi Data")
     st.subheader("Pilih Aplikasi (Default)")
-
-    use_tiktok = st.checkbox("TikTok", value=False)
+    
+    use_whatsapp = st.checkbox("WhatsApp", value=True)
+    use_youtube = st.checkbox("YouTube", value=True)
     use_ig = st.checkbox("Instagram", value=True)
     use_fb = st.checkbox("Facebook", value=False)
-    use_threads = st.checkbox("Threads", value=False)
 
     selected_defaults = []
-    if use_tiktok: selected_defaults.append("com.zhiliaoapp.musically")
+    if use_whatsapp: selected_defaults.append("com.whatsapp")
+    if use_youtube: selected_defaults.append("com.google.android.youtube")
     if use_ig: selected_defaults.append("com.instagram.android")
     if use_fb: selected_defaults.append("com.facebook.katana")
-    if use_threads: selected_defaults.append("com.instagram.barcelona")
 
     st.markdown("<br>", unsafe_allow_html=True)
 
@@ -160,7 +160,7 @@ def render_analysis_page():
                 epochs = c1.number_input("Epochs", min_value=1, max_value=10, value=2)
                 c1.caption("Default: 2. Jumlah putaran pelatihan.")
                 
-                batch_size = c2.selectbox("Batch Size", [8, 16, 32], index=0)
+                batch_size = c2.selectbox("Batch Size", [8, 16, 32, 64], index=0)
                 c2.caption("Default: 8. Semakin besar butuh memori GPU besar.")
                 
                 lr = c3.selectbox("Learning Rate", [1e-5, 2e-5, 3e-5, 5e-5], index=1)

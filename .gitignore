@@ -30,14 +30,3 @@ Thumbs.db
 output/
 temp/
 tmp/
-
-# Shapefile
-/shapefiles/*
-*.shp
-*.shx
-*.dbf
-*.prj
-*.cpg
-*.sbn
-*.sbx
-*.xml

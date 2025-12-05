@@ -1,61 +1,59 @@
-judul = "Analisis Sentimen Ulasan Pengguna Aplikasi Media Sosial di Google Play Store dengan Pendekatan IndoBERTa"
+judul = "Analisis Sentimen Ulasan Pengguna Aplikasi Media Sosial di Google Play Store dengan Pendekatan IndoRoBERTa"
 
-string1 = """ 
-Ulasan pengguna di Google Play Store merupakan sumber informasi penting karena mencerminkan pengalaman dan kepuasan pengguna terhadap aplikasi media sosial. 
-Berdasarkan analisis awal, sebagian besar ulasan bersifat positif, namun terdapat juga ulasan negatif dan netral yang memberikan masukan berharga. 
-Analisis sentimen dengan model IndoBERTa memungkinkan pengembang untuk memahami opini pengguna secara otomatis dan efisien.
+string1 = """
+Ulasan pengguna di Google Play Store merupakan aset vital yang mencerminkan tingkat kepuasan dan pengalaman nyata terhadap aplikasi media sosial. 
+Meskipun mayoritas ulasan cenderung positif, ulasan negatif dan netral sering kali menyimpan wawasan krusial terkait bug, keluhan, atau saran perbaikan. 
+Sistem ini menggunakan model **IndoRoBERTa** untuk mengotomatisasi proses analisis tersebut, sehingga pola opini pengguna dapat dipahami secara lebih efisien dan akurat.
 """
 
 string2 = """
-Sentimen ulasan menjadi indikator penting dalam memahami pengalaman pengguna aplikasi media sosial:
+Sentimen ulasan dikategorikan menjadi tiga indikator utama untuk memetakan persepsi pengguna:
 <ul>
-<li><b>Sentimen Positif</b> = ulasan yang mengekspresikan kepuasan atau pengalaman menyenangkan dengan aplikasi.</li>
-<li><b>Sentimen Negatif</b> = ulasan yang mengekspresikan ketidakpuasan, keluhan, atau masalah yang ditemui pengguna.</li>
-<li><b>Sentimen Netral</b> = ulasan yang bersifat informatif atau memberikan saran tanpa emosi kuat.</li>
+<li><b>Sentimen Positif:</b> Merepresentasikan kepuasan, pujian, atau pengalaman penggunaan yang menyenangkan.</li>
+<li><b>Sentimen Negatif:</b> Mencerminkan ketidakpuasan, keluhan teknis, atau kendala yang dialami pengguna.</li>
+<li><b>Sentimen Netral:</b> Berisi informasi objektif, pertanyaan, atau saran fitur tanpa muatan emosi yang kuat.</li>
 </ul>
 """
 
 string3 = """
-Untuk mengenali pola opini pengguna, sistem ini membuat platform berbasis web menggunakan Streamlit.
-Sistem ini memanfaatkan model IndoBERTa untuk melakukan klasifikasi sentimen secara otomatis.
-Hasil ditampilkan dalam bentuk grafik distribusi, word cloud, dan tabel ringkasan.
-Tujuannya agar pengembang dapat memahami opini pengguna secara visual, efisien, dan mudah dipahami.
+Platform ini dikembangkan menggunakan kerangka kerja **Streamlit** untuk memvisualisasikan hasil analisis secara interaktif.
+Dengan mengintegrasikan model *Deep Learning* IndoRoBERTa, sistem mampu mengklasifikasikan sentimen secara otomatis.
+Hasil analisis disajikan melalui **Grafik Distribusi**, **Word Cloud**, dan **Tabel Ringkasan** untuk memudahkan pengembang dalam mengambil keputusan berbasis data.
 """
 
 cara_penggunaan = """
-1. Buka Halaman Analisis Sentimen untuk memulai.
-2. Unggah dataset ulasan atau pilih aplikasi dari daftar yang tersedia.
-3. Tentukan rentang tanggal ulasan yang ingin dianalisis.
-4. Klik 'Jalankan Analisis'.
-5. Lihat hasil visualisasi grafik, word cloud, dan tabel ringkasan.
-6. Unduh hasil analisis jika diperlukan.
+1. **Mulai:** Buka menu 'Analisis Sentimen' pada sidebar.
+2. **Input Data:** Unggah dataset ulasan baru atau pilih sampel aplikasi yang tersedia.
+3. **Filter:** Tentukan rentang tanggal ulasan yang ingin dianalisis (opsional).
+4. **Proses:** Klik tombol 'Jalankan Analisis' dan tunggu model bekerja.
+5. **Eksplorasi:** Analisis visualisasi melalui grafik, word cloud, dan metrik yang muncul.
+6. **Simpan:** Unduh hasil klasifikasi dalam format CSV/Excel jika diperlukan.
 """
 
-question1 = "Apa itu analisis sentimen pada ulasan pengguna?"
+question1 = "Apa urgensi analisis sentimen pada ulasan pengguna?"
 answer1 = """
-Analisis sentimen adalah proses untuk mengidentifikasi opini atau perasaan pengguna dalam teks, biasanya dikategorikan menjadi **positif**, **negatif**, atau **netral**. 
-Dalam konteks aplikasi media sosial, analisis ini membantu pengembang memahami persepsi pengguna dan mengidentifikasi area untuk perbaikan aplikasi.
+Analisis sentimen berfungsi untuk **menambang opini** dari teks mentah. 
+Dalam konteks pengembangan aplikasi, ini membantu tim developer untuk mendeteksi bug kritis lebih cepat, memahami fitur yang paling disukai, dan merespons keluhan pengguna berdasarkan data, bukan asumsi.
 """
 
-question2 = "Metode apa yang digunakan untuk klasifikasi sentimen dalam sistem ini?"
+question2 = "Mengapa menggunakan model IndoRoBERTa?"
 answer2 = """
-Sistem ini menggunakan model **IndoBERTa**:
-- Mampu memahami konteks bahasa Indonesia dengan baik.
-- Mengklasifikasikan ulasan ke dalam sentimen positif, netral, atau negatif.
-- Mendukung analisis otomatis untuk dataset besar dengan akurasi tinggi.
+**IndoRoBERTa** dipilih karena:
+- Merupakan model berbasis Transformer yang telah dilatih khusus pada korpus Bahasa Indonesia yang masif.
+- Memiliki kemampuan memahami **konteks kalimat**, slang, dan singkatan yang sering muncul di media sosial jauh lebih baik daripada metode tradisional.
+- Memberikan akurasi klasifikasi yang tinggi untuk teks ulasan yang tidak baku.
 """
 
 penjelasan_dataset = """
-- **App_Name**: Nama aplikasi media sosial.
-- **Review_ID**: ID ulasan unik.
-- **User_Name**: Nama pengguna (anonim/opsional).
-- **Review_Text**: Isi ulasan pengguna.
-- **Rating**: Rating pengguna (1–5).
-- **Date**: Tanggal ulasan ditulis.
-- **Sentiment**: Hasil klasifikasi sentimen (Positif/Netral/Negatif).
+Pastikan dataset yang diunggah memiliki format kolom berikut:
+- **App_Name**: Nama aplikasi (String).
+- **Review_Text**: Isi ulasan pengguna yang akan dianalisis (String).
+- **Rating**: Skala penilaian 1-5 (Integer).
+- **Date**: Tanggal ulasan (Datetime).
+- *(Opsional)* **User_Name**: Nama pengguna.
 """
 
 # PENJELASAN TAMBAHAN
-penjelasan_sentimen = "Sentimen Positif, Negatif, dan Netral menunjukkan opini pengguna terhadap aplikasi."
-penjelasan_indoberta = "Gunakan IndoBERTa untuk analisis sentimen otomatis dalam bahasa Indonesia."
-penjelasan_visualisasi = "Hasil analisis dapat divisualisasikan menggunakan grafik distribusi, word cloud, dan tabel ringkasan."
+penjelasan_sentimen = "Distribusi ini menunjukkan persentase opini Positif, Negatif, dan Netral dalam dataset."
+penjelasan_indoRoBERTa = "Model IndoRoBERTa memproses teks untuk menangkap nuansa bahasa Indonesia secara mendalam."
+penjelasan_visualisasi = "Visualisasi interaktif untuk memudahkan pemahaman pola data secara cepat."

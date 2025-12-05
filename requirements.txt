@@ -1,15 +1,18 @@
+# Web app
 streamlit
+streamlit_option_menu
+
+# Fetch data
+google-play-scraper
+
 pandas
 numpy
-scikit-learn
-plotly
-folium
-streamlit-folium
-geopandas
 matplotlib
 seaborn
-fpdf2
-openpyxl
-streamlit_option_menu
-typing
-kneed
+scikit-learn
+imbalanced-learn
+wordcloud
+Sastrawi
+torch
+transformers
+accelerate

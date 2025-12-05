@@ -1,5 +1,8 @@
-# IndoBERT(A-7)
+# RoBERTa-A7
 Analisis Sentimen Ulasan Pengguna Aplikasi Media Sosial di Google Play Store dengan Pendekatan IndoBERT
+
+## 📖 Deskripsi Proyek
+**RoBERTa-A7** adalah sistem analisis sentimen berbasis web untuk menganalisis sentimen dari ulasan aplikasi di Google Play Store. Sistem ini menggunakan **IndoRoBERTa** (Transformer) untuk mengklasifikasikan opini pengguna ke dalam sentimen **Positif**, **Netral**, atau **Negatif** secara otomatis. Proyek ini dibuat untuk memenuhi tugas Ujian Akhir Semester (UAS) mata kuliah Natural Language Processing.
 
 Anggota:
 * 535220187 - Jessica Ho
@@ -7,7 +10,16 @@ Anggota:
 * 535230023 - Muhammad Akbar
 ---
 
-## Panduan Menjalankan Aplikasi IndoBERT(A-7) (Streamlit) di Windows
+Tech Stack
+* Python 3.10+
+* Streamlit (Web Framework)
+* Transformers
+* Scikit-Learn & Imbalanced-learn
+* Matplotlib & Seaborn
+* Selengkapnya dapat dilihat pada [Requirements](requirements.txt)
+---
+
+## Panduan Menjalankan Aplikasi RoBERTa-A7 (Streamlit) di Windows
 
 ### 1. Persiapan Lingkungan
 - Pastikan Python sudah terinstall (disarankan Python 3.10+)
@@ -43,7 +55,7 @@ cd C:\Users\alifa\Downloads\BERTa-7
   py -m venv venv
   ```
 
-- Aktifkan venv (Windows):
+- Aktifkan venv:
   ```bash
   .\venv\Scripts\Activate.ps1
   ```

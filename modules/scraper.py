@@ -14,16 +14,15 @@ def scrape_google_play(app_ids, count=200):
                 count=count
             )
             for r in rvs:
-                r['source_app'] = app_id
+                r['app_id'] = app_id
             all_reviews.extend(rvs)
         except Exception as e:
             print(f"Gagal mengambil {app_id}: {e}")
             
     df = pd.DataFrame(all_reviews)
-    expected_cols = ['userName', 'content', 'score', 'at', 'source_app']
+    expected_cols = ['content', 'score', 'at', 'app_id']
     
     if df.empty:
-        # Jika kosong, kembalikan dataframe kosong TAPI dengan kolom yang benar
         return pd.DataFrame(columns=expected_cols)
     available_cols = [c for c in expected_cols if c in df.columns]
     df = df[available_cols]

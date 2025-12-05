@@ -126,6 +126,17 @@ def render_analysis_page():
                     plt.title("Distribusi Sentimen Awal", fontsize=10)
                     ax2.tick_params(labelsize=8)
                     st.pyplot(fig2)
+                    
+                with col_text2:
+                    st.caption("Rincian Jumlah Data:")
+                    counts = df_clean['label_name'].value_counts()
+                    
+                    for label in ['Positif', 'Netral', 'Negatif']:
+                        if label in counts:
+                            val = counts[label]
+                            # Menghitung persentase
+                            pct = (val / len(df_clean)) * 100
+                            st.write(f"**{label}:** {val} ulasan ({pct:.1f}%)")
 
             # PEMBAGIAN DATA & OVERSAMPLING
             st.header("3. Pembagian Data & Oversampling")
@@ -202,6 +213,18 @@ def render_analysis_page():
                 plt.title("Distribusi Label Latih (Balanced)", fontsize=10)
                 ax3.tick_params(labelsize=8)
                 st.pyplot(fig3)
+                
+            with col_text3:
+                st.caption("Rincian Data Latih (Setelah Oversampling):")
+                unique, counts = np.unique(y_train_ros, return_counts=True)
+                label_map = {0: 'Negatif', 1: 'Netral', 2: 'Positif'}
+                
+                total_ros = len(y_train_ros)
+                
+                for val, count in zip(unique, counts):
+                    label_text = label_map[val]
+                    pct = (count / total_ros) * 100
+                    st.write(f"**{label_text}:** {count} ulasan ({pct:.1f}%)")
             
             # MODELING (INDOROBERTA)
             st.header("4. Fine-Tuning IndoRoBERTa")

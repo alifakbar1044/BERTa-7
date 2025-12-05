@@ -20,10 +20,10 @@ def render_analysis_page():
     st.header("1. Konfigurasi Data")
     st.subheader("Pilih Aplikasi (Default)")
     
-    use_whatsapp = st.checkbox("WhatsApp", value=True)
-    use_youtube = st.checkbox("YouTube", value=True)
-    use_ig = st.checkbox("Instagram", value=True)
-    use_fb = st.checkbox("Facebook", value=False)
+    use_whatsapp = st.checkbox("WhatsApp (com.whatsapp)", value=True)
+    use_youtube = st.checkbox("YouTube (com.google.android.youtube)", value=True)
+    use_ig = st.checkbox("Instagram (com.instagram.android)", value=True)
+    use_fb = st.checkbox("Facebook (com.facebook.katana)", value=False)
 
     selected_defaults = []
     if use_whatsapp: selected_defaults.append("com.whatsapp")
@@ -34,7 +34,16 @@ def render_analysis_page():
     st.markdown("<br>", unsafe_allow_html=True)
 
     st.subheader("Pengaturan Lain")
-    custom_app = st.text_input("Package ID Custom (opsional, misal: com.whatsapp):")
+    html_link = (
+        "Contoh link Google Play Store: https:\\"
+        "play.google.com/store/apps/details?"
+        '<span style="color:#000;">id=</span>'
+        '<span style="background-color:#fff59d; padding:2px 6px; border-radius:4px;">com.zhiliaoapp.musically.go</span>'
+        '&hl=id'
+    )
+    st.markdown(html_link, unsafe_allow_html=True)
+
+    custom_app = st.text_input("Package ID Custom (opsional, misal: com.zhiliaoapp.musically.go)", value="")
     data_count = st.slider("Jumlah Data per Aplikasi:", min_value=200, max_value=3000, value=500, step=100)
 
     if custom_app:
@@ -113,17 +122,38 @@ def render_analysis_page():
             # PEMBAGIAN DATA & OVERSAMPLING
             st.header("3. Pembagian Data & Oversampling")
             
+            st.subheader("Konfigurasi Rasio Data")
+            split_option = st.selectbox(
+                "Pilih Rasio Pembagian (Train : Validation : Test)",
+                options=["80 : 10 : 10", "70 : 15 : 15", "60 : 20 : 20"],
+                index=0
+            )
+            
+            if split_option == "80 : 10 : 10":
+                test_ratio = 0.10
+                val_ratio = 0.10
+            elif split_option == "70 : 15 : 15":
+                test_ratio = 0.15
+                val_ratio = 0.15
+            else: # 60 : 20 : 20
+                test_ratio = 0.20
+                val_ratio = 0.20
+
             # Split Data
             X = df_clean['clean_content'].values
             y = df_clean['label'].values
             
-            # Split 80% Train, 20% Test
+            # Tahap 1: Pisahkan Data Test dari Total
+            # (Misal 80:10:10 -> Ambil 10% untuk Test, sisa 90% masuk Train_Full)
             X_train_full, X_test, y_train_full, y_test = train_test_split(
-                X, y, test_size=0.2, stratify=y, random_state=42
+                X, y, test_size=test_ratio, stratify=y, random_state=42
             )
-            # Split Train lagi jadi Train & Val (Total: 70% Train, 10% Val, 20% Test)
+            
+            # Tahap 2: Pisahkan Data Validation dari Train_Full
+            val_ratio_relative = val_ratio / (1 - test_ratio)
+
             X_train, X_val, y_train, y_val = train_test_split(
-                X_train_full, y_train_full, test_size=0.125, stratify=y_train_full, random_state=42
+                X_train_full, y_train_full, test_size=val_ratio_relative, stratify=y_train_full, random_state=42
             )
 
             # Oversampling
@@ -133,10 +163,26 @@ def render_analysis_page():
             
             total_data = len(X)
             
+            # Menampilkan Metrik
             c_split1, c_split2, c_split3 = st.columns(3)
-            c_split1.metric("Data Latih (Train)", f"{len(X_train)} ({len(X_train)/total_data:.1%})", "Akan di-oversampling")
-            c_split2.metric("Data Validasi", f"{len(X_val)} ({len(X_val)/total_data:.1%})")
-            c_split3.metric("Data Uji (Test)", f"{len(X_test)} ({len(X_test)/total_data:.1%})")
+            
+            train_pct = len(X_train)/total_data
+            val_pct = len(X_val)/total_data
+            test_pct = len(X_test)/total_data
+
+            c_split1.metric(
+                "Data Latih (Train)", 
+                f"{len(X_train)} ({train_pct:.1%})", 
+                "Akan di-oversampling"
+            )
+            c_split2.metric(
+                "Data Validasi", 
+                f"{len(X_val)} ({val_pct:.1%})"
+            )
+            c_split3.metric(
+                "Data Uji (Test)", 
+                f"{len(X_test)} ({test_pct:.1%})"
+            )
 
             st.info(f"**Status Oversampling:** Jumlah data latih meningkat dari **{len(X_train)}** menjadi **{len(X_train_ros)}** agar seimbang.")
 

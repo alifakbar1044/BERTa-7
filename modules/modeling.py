@@ -59,9 +59,10 @@ def train_indoroberta(X_train, y_train, X_val, y_val, hyperparams):
         warmup_steps=100,
         weight_decay=0.01,
         logging_dir='./logs',
-        logging_steps=10,
+        
+        logging_strategy="epoch",
         eval_strategy="epoch",
-        save_strategy="no", 
+        save_strategy="no",
         use_cpu=True if device == "cpu" else False
     )
     

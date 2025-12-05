@@ -238,6 +238,39 @@ def render_analysis_page():
                         
                         st.success(f"Pelatihan Selesai! Waktu: {duration_train:.2f} detik")
                         
+                        st.subheader("📈 Riwayat Pelatihan per Epoch")
+                        
+                        history = trainer.state.log_history
+                        
+                        epoch_data = {}
+                        for log in history:
+                            if 'epoch' in log:
+                                ep = int(round(log['epoch']))
+                                if ep not in epoch_data: epoch_data[ep] = {}
+                                epoch_data[ep].update(log)
+                        
+                        clean_history = []
+                        for ep, data in epoch_data.items():
+                            if 'loss' in data and 'eval_loss' in data:
+                                clean_history.append({
+                                    'Epoch': ep,
+                                    'Training Loss': data.get('loss'),
+                                    'Validation Loss': data.get('eval_loss'),
+                                    'Accuracy': data.get('eval_accuracy'),
+                                    'Precision': data.get('eval_precision'),
+                                    'Recall': data.get('eval_recall'),
+                                    'F1-Score': data.get('eval_f1')
+                                })
+                        
+                        if clean_history:
+                            df_hist = pd.DataFrame(clean_history).set_index('Epoch')
+                            st.dataframe(df_hist, use_container_width=True)
+                            
+                            st.caption("Grafik Penurunan Loss")
+                            st.line_chart(df_hist[['Training Loss', 'Validation Loss']])
+                        else:
+                            st.warning("Data riwayat per epoch belum tersedia lengkap.")
+
                         st.session_state['trainer'] = trainer
                         st.session_state['tokenizer'] = tokenizer
                         st.session_state['model'] = model
@@ -316,3 +349,40 @@ def render_analysis_page():
                     file_name='hasil_prediksi_sentimen.csv',
                     mime='text/csv',
                 )
+                
+            if 'model' in st.session_state:
+                st.divider()
+                st.header("6. Uji Coba Model")
+                st.caption("Uji model yang baru saja dilatih dengan kalimat bebas.")
+                
+                txt_input = st.text_input("Masukkan teks ulasan:", placeholder="Contoh: Aplikasinya bagus tapi kadang suka error.")
+                
+                if st.button("Prediksi Sentimen", key="btn_predict_manual"):
+                    if txt_input:
+                        # 1. Preprocess input user (harus sama dengan data latih)
+                        clean_input = preprocessing.clean_text(txt_input)
+                        
+                        # 2. Siapkan Model & Tokenizer dari Session State
+                        tokenizer = st.session_state['tokenizer']
+                        model = st.session_state['model']
+                        device = "cuda" if torch.cuda.is_available() else "cpu"
+                        
+                        # 3. Prediksi
+                        inputs = tokenizer(clean_input, return_tensors="pt", truncation=True, padding=True, max_length=128)
+                        inputs = {k: v.to(device) for k, v in inputs.items()}
+                        
+                        with torch.no_grad():
+                            outputs = model(**inputs)
+                        
+                        pred_idx = torch.argmax(outputs.logits, dim=-1).item()
+                        label_hasil = preprocessing.get_label_name(pred_idx)
+                        
+                        # 4. Tampilkan Hasil
+                        if label_hasil == "Positif":
+                            st.success(f"Hasil Prediksi: **{label_hasil}**")
+                        elif label_hasil == "Negatif":
+                            st.error(f"Hasil Prediksi: **{label_hasil}**")
+                        else:
+                            st.warning(f"Hasil Prediksi: **{label_hasil}**")
+                    else:
+                        st.warning("Mohon masukkan teks terlebih dahulu.")

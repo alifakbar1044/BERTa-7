@@ -73,10 +73,18 @@ def render_analysis_page():
             
             col_chart, col_text = st.columns([1, 2])
             with col_chart:
-                fig, ax = plt.subplots(figsize=(4, 3))
-                sns.countplot(x='score', data=df, palette='viridis', ax=ax)
-                plt.title("Distribusi Rating", fontsize=10)
+                fig, ax = plt.subplots(figsize=(6, 3))
+                try:
+                    sns.countplot(x='score', hue='app_id', data=df, palette='viridis', ax=ax)
+                    plt.legend(title='Aplikasi', fontsize=8, title_fontsize=9, loc='upper left', bbox_to_anchor=(1, 1))
+                    plt.title("Distribusi Rating per Aplikasi", fontsize=10)
+                except ValueError:
+                    st.warning("⚠️ Kolom 'app_id' tidak ditemukan. Menampilkan grafik total.")
+                    sns.countplot(x='score', data=df, palette='viridis', ax=ax)
+                    plt.title("Distribusi Rating (Total)", fontsize=10)
+
                 ax.tick_params(axis='both', which='major', labelsize=8)
+                plt.tight_layout()
                 st.pyplot(fig)
             with col_text:
                 st.write(f"**Total Data:** {len(df)} baris")

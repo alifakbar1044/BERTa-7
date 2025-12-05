@@ -1,7 +1,13 @@
-# IndoRoBERTa(A-7)
-Analisis Sentimen Ulasan Pengguna Aplikasi Media Sosial di Google Play Store dengan Pendekatan IndoRoBERTa
+# IndoBERT(A-7)
+Analisis Sentimen Ulasan Pengguna Aplikasi Media Sosial di Google Play Store dengan Pendekatan IndoBERT
 
-## Panduan Menjalankan Aplikasi IndoRoBERTa(A-7) (Streamlit) di Windows
+Anggota:
+* 535220187 - Jessica Ho
+* 535220226 - Parveen Uzma
+* 535230023 - Muhammad Akbar
+---
+
+## Panduan Menjalankan Aplikasi IndoBERT(A-7) (Streamlit) di Windows
 
 ### 1. Persiapan Lingkungan
 - Pastikan Python sudah terinstall (disarankan Python 3.10+)
@@ -27,7 +33,7 @@ Misal project ada di `C:\Users\alifa\Downloads\BERTa-7`:
 cd C:\Users\alifa\Downloads\BERTa-7
 ```
 
-### 3. Membuat Virtual Environment (CMD)
+### 3. Membuat Virtual Environment
 - Buat venv di folder project (pilih salah satu sesuai Python di PC):
   ```bash
   python -m venv venv
@@ -37,9 +43,9 @@ cd C:\Users\alifa\Downloads\BERTa-7
   py -m venv venv
   ```
 
-- Aktifkan venv (Windows, CMD):
+- Aktifkan venv (Windows):
   ```bash
-  venv\Scripts\activate
+  .\venv\Scripts\Activate.ps1
   ```
 
 - Install library yang dibutuhkan:
@@ -64,6 +70,3 @@ Network URL: http://192.168.1.18:8501
 ```
 
 Buka browser dan akses **Local URL** untuk melihat aplikasi.
-
----
-Selamat mencoba!

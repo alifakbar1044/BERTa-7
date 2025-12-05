@@ -1,49 +1,69 @@
-# BERTa-7
-Analisis Sentimen Ulasan Pengguna Aplikasi Media Sosial di Google Play Store dengan Pendekatan IndoBERTa
+# IndoRoBERTa(A-7)
+Analisis Sentimen Ulasan Pengguna Aplikasi Media Sosial di Google Play Store dengan Pendekatan IndoRoBERTa
 
+## Panduan Menjalankan Aplikasi IndoRoBERTa(A-7) (Streamlit) di Windows
 
-Panduan Menjalankan Aplikasi BERTa-7 (Streamlit) di Windows
+### 1. Persiapan Lingkungan
+- Pastikan Python sudah terinstall (disarankan Python 3.10+)
 
+  Cek versi Python:
+  ```bash
+  python --version
+  ```
+  atau
+  ```bash
+  py --version
+  ```
+  
+  Pastikan pip sudah terinstall:
+  ```bash
+  pip --version
+  ```
 
-1️⃣ Persiapan Lingkungan
+### 2. Masuk ke Folder Project
+Misal project ada di `C:\Users\alifa\Downloads\BERTa-7`:
 
-Pastikan Python sudah terinstall.
-Cek versi Python:
-
-python --version
-
-
-Minimal Python 3.10+ direkomendasikan.
-
-Pastikan pip sudah terinstall:
-
-pip --version
-
-
-Install library yang dibutuhkan (di folder project):
-
-pip install streamlit pandas matplotlib seaborn torch transformers google-play-scraper wordcloud scikit-learn imbalanced-learn plotly
-
-
-Catatan: Jika menggunakan --user, pastikan Python Scripts sudah ada di PATH, atau jalankan dengan python -m streamlit run app.py.
-
-2️⃣ Masuk ke Folder Project
-
-Misal project ada di C:\Users\alifa\Downloads\BERTa-7:
-
+```bash
 cd C:\Users\alifa\Downloads\BERTa-7
+```
 
-3️⃣ Menjalankan Aplikasi
+### 3. Membuat Virtual Environment (CMD)
+- Buat venv di folder project (pilih salah satu sesuai Python di PC):
+  ```bash
+  python -m venv venv
+  ```
+  atau
+  ```bash
+  py -m venv venv
+  ```
 
-Karena kadang streamlit tidak dikenali di PowerShell, gunakan perintah:
+- Aktifkan venv (Windows, CMD):
+  ```bash
+  venv\Scripts\activate
+  ```
 
+- Install library yang dibutuhkan:
+  ```bash
+  pip install -r requirements.txt
+  ```
+
+### 4. Menjalankan Aplikasi (Pilih salah satu sesuai Python di PC)
+```bash
 python -m streamlit run app.py
-
+```
+atau
+```bash
+py -m streamlit run app.py
+```
 
 Jika berhasil, akan muncul di PowerShell:
 
+```
 Local URL: http://localhost:8501
 Network URL: http://192.168.1.18:8501
+```
 
+Buka browser dan akses **Local URL** untuk melihat aplikasi.
 
-Buka browser dan akses Local URL untuk melihat aplikasi.
+---
+Selamat mencoba!

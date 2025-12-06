@@ -249,19 +249,29 @@ def render_analysis_page():
                 hyperparams = {'epochs': epochs, 'batch_size': batch_size, 'lr': lr}
                 
                 start_train = time.time()
+                
+                progress_bar = st.progress(0)
+                status_text = st.empty()
+                
                 with st.spinner("Sedang melatih IndoRoBERTa... (Proses ini memakan waktu)"):
                     try:
+                        status_text.text("Memulai proses training...")
+                        
                         # PANGGIL FUNGSI TRAINING
                         trainer, tokenizer, model = modeling.train_indoroberta(
                             X_train_ros, y_train_ros, X_val, y_val, hyperparams
                         )
                         
+                        progress_bar.progress(100)
+                        status_text.text("Training selesai!")
+                        
                         end_train = time.time()
                         duration_train = end_train - start_train
                         
-                        st.success(f"Pelatihan Selesai! Waktu: {duration_train:.2f} detik")
+                        st.success(f"Pelatihan Selesai! Total Waktu: {duration_train:.2f} detik")
                         
-                        st.subheader("📈 Riwayat Pelatihan per Epoch")
+                        st.markdown("---")
+                        st.subheader("Riwayat Performa per Epoch")
                         
                         history = trainer.state.log_history
                         
@@ -269,30 +279,45 @@ def render_analysis_page():
                         for log in history:
                             if 'epoch' in log:
                                 ep = int(round(log['epoch']))
-                                if ep not in epoch_data: epoch_data[ep] = {}
+                                if ep not in epoch_data: 
+                                    epoch_data[ep] = {}
                                 epoch_data[ep].update(log)
                         
                         clean_history = []
                         for ep, data in epoch_data.items():
-                            if 'loss' in data and 'eval_loss' in data:
-                                clean_history.append({
-                                    'Epoch': ep,
-                                    'Training Loss': data.get('loss'),
-                                    'Validation Loss': data.get('eval_loss'),
-                                    'Accuracy': data.get('eval_accuracy'),
-                                    'Precision': data.get('eval_precision'),
-                                    'Recall': data.get('eval_recall'),
-                                    'F1-Score': data.get('eval_f1')
-                                })
+                            if 'loss' in data or 'eval_loss' in data:
+                                entry = {'Epoch': ep}
+                                if 'loss' in data: entry['Training Loss'] = data['loss']
+                                if 'eval_loss' in data: entry['Validation Loss'] = data['eval_loss']
+                                if 'eval_accuracy' in data: entry['Accuracy'] = data['eval_accuracy']
+                                if 'eval_f1' in data: entry['F1-Score'] = data['eval_f1']
+                                if 'eval_precision' in data: entry['Precision'] = data['eval_precision']
+                                if 'eval_recall' in data: entry['Recall'] = data['eval_recall']
+                                clean_history.append(entry)
                         
                         if clean_history:
                             df_hist = pd.DataFrame(clean_history).set_index('Epoch')
+                            
+                            # Tampilkan Tabel
                             st.dataframe(df_hist, use_container_width=True)
                             
-                            st.caption("Grafik Penurunan Loss")
-                            st.line_chart(df_hist[['Training Loss', 'Validation Loss']])
+                            # Tampilkan Grafik (Loss & F1 Score)
+                            col_g1, col_g2 = st.columns(2)
+                            with col_g1:
+                                st.caption("Grafik Loss (Semakin rendah semakin baik)")
+                                if 'Training Loss' in df_hist.columns and 'Validation Loss' in df_hist.columns:
+                                    st.line_chart(df_hist[['Training Loss', 'Validation Loss']])
+                                else:
+                                    st.info("Data Loss belum lengkap untuk grafik.")
+                                    
+                            with col_g2:
+                                st.caption("Grafik F1-Score (Semakin tinggi semakin baik)")
+                                if 'F1-Score' in df_hist.columns:
+                                    st.line_chart(df_hist[['F1-Score']])
+                                else:
+                                    st.info("Data F1-Score belum lengkap untuk grafik.")
                         else:
-                            st.warning("Data riwayat per epoch belum tersedia lengkap.")
+                            st.warning("Data riwayat per epoch tidak ditemukan. Pastikan logging_strategy='epoch' di modeling.py")
 
                         st.session_state['trainer'] = trainer
                         st.session_state['tokenizer'] = tokenizer
@@ -301,7 +326,7 @@ def render_analysis_page():
                         
                     except Exception as e:
                         st.error(f"Terjadi error saat training: {e}")
-                        print(f"DEBUG ERROR: {e}")
+                        # print(f"DEBUG ERROR: {e}")
 
             # EVALUASI & VISUALISASI AKHIR
             if 'trainer' in st.session_state:

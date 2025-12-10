@@ -19,14 +19,14 @@ def render_about_page():
     st.markdown("""
     **RoBERTa-A7** adalah sistem *end-to-end* yang dirancang untuk mengekstrak wawasan dari ulasan Google Play Store. Berikut adalah tahapan proses yang dilakukan oleh sistem ini:
     
-    1.  **Akuisisi Data**: Menerima input dataset ulasan (format `.csv` atau `.xlsx`) yang berisi teks komentar pengguna.
-    2.  **Preprocessing Teks**: Membersihkan data mentah (menghapus emoji, tanda baca, *case folding*) agar siap diproses oleh mesin.
-    3.  **Penyeimbangan Data**: Menerapkan teknik **Oversampling (ROS)** untuk mengatasi ketidakseimbangan jumlah data antar kelas sentimen.
-    4.  **Modeling (IndoRoBERTa)**: Menggunakan *Pre-trained Model* **IndoRoBERTa** yang telah dilatih pada korpus Bahasa Indonesia masif untuk mengklasifikasikan sentimen (Positif, Netral, Negatif).
-    5.  **Visualisasi Interaktif**: Menampilkan hasil analisis dalam bentuk:
-        * *Pie/Bar Chart* untuk distribusi sentimen.
+    1.  **Input Data**: Mengambil data ulasan terbaru secara langsung (real-time) dari Google Play Store berdasarkan ID aplikasi yang dipilih (seperti WhatsApp, Instagram) atau ID kustom.
+    2.  **Preprocessing Teks & Labeling Data otomatis**: Mengonversi rating bintang pengguna menjadi label sentimen (Skor 1-2: Negatif, 3: Netral, 4-5: Positif). Lalu, Membersihkan teks dari karakter non-huruf, mentions, hashtags, serta normalisasi bahasa gaul (slang) menjadi bahasa baku menggunakan kamus leksikon.
+    3.  **Pembagian & Penyeimbangan Data**: Menerapkan data splitting menjadi data training, validasi, dan data uji. Juga menerapkan teknik **Oversampling (ROS)** untuk mengatasi ketidakseimbangan jumlah data antar kelas sentimen.
+    4.  **Modeling (IndoRoBERTa)**: Melatih model pre-trained IndoRoBERTa menggunakan data ulasan yang telah diproses. Pengguna dapat mengatur hyperparameters (Epochs, Batch Size, Learning Rate) untuk mengoptimalkan performa model.
+    5.  **Evaluasi & Visualisasi**: Menampilkan hasil analisis dalam bentuk:
+        * *Metrik Evaluasi* Akurasi, Presisi, Recall, dan F1-Score.
         * *Word Cloud* untuk melihat kata yang paling sering muncul.
-        * *Confusion Matrix* untuk evaluasi akurasi model.
+    6. Fitur tambahan: Uji coba prediksi, pengguna dapat memasukkan kalimat ulasan untuk menguji hasil prediksi.
     """)
 
     st.divider()
@@ -35,8 +35,7 @@ def render_about_page():
     st.subheader("🧠 Mengapa IndoRoBERTa?")
     st.markdown("""
     Sistem ini memanfaatkan **IndoRoBERTa**, model berbasis *Transformer* yang unggul dalam memahami konteks semantik Bahasa Indonesia dibandingkan metode tradisional (seperti Naive Bayes atau SVM). 
-    
-    Model ini mampu menangkap nuansa bahasa gaul (*slang*), singkatan, dan struktur kalimat kompleks yang sering ditemukan pada ulasan media sosial.
+    Model ini merupakan varian dari IndoBERT
     """)
 
     st.divider()

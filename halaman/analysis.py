@@ -5,7 +5,6 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from wordcloud import WordCloud
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import confusion_matrix, classification_report
 from imblearn.over_sampling import RandomOverSampler
 import torch
 import time
@@ -94,15 +93,13 @@ def render_analysis_page():
         st.header("2. Preprocessing & Labeling")
         st.info("""
         **Tahapan Preprocessing yang dilakukan:**
-        1. **Mapping Label:** Mengubah Skor Bintang menjadi Label (1-2: Negatif, 3: Netral, 4-5: Positif).
-        2. **Case Folding:** Mengubah semua huruf menjadi huruf kecil (lowercase).
-        3. **Cleaning:** Menghapus Mention (@user), Hashtag (#), Link (http..), Angka, dan Tanda Baca.
-        4. **Normalization:** Menghapus spasi berlebih.
-        5. **Stopword Removal:** Menghapus kata hubung umum (yang, di, ke, dll) menggunakan pustaka Sastrawi.
+        1. Cleaning (Hapus simbol, angka, url).
+        2. Normalisasi (Menggunakan Kamus Alay + Manual).
+        3. Labeling (1-2: Negatif, 3: Netral, 4-5: Positif).
         """)
 
         if st.button("Jalankan Preprocessing"):
-            with st.spinner("Membersihkan teks..."):
+            with st.spinner("Membersihkan teks dan normalisasi kata..."):
                 # 1. Mapping Label
                 df['label'] = df['score'].apply(preprocessing.map_score_to_label)
                 df['label_name'] = df['label'].apply(preprocessing.get_label_name)

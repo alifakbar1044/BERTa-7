@@ -1,5 +1,5 @@
 import torch
-from transformers import AutoTokenizer, AutoModelForSequenceClassification, TrainingArguments, Trainer
+from transformers import AutoTokenizer, AutoModelForSequenceClassification, TrainingArguments, Trainer, EarlyStoppingCallback, set_seed
 from sklearn.metrics import accuracy_score, precision_recall_fscore_support
 
 # Load Model Base
@@ -34,6 +34,8 @@ def compute_metrics(pred):
     }
 
 def train_indoroberta(X_train, y_train, X_val, y_val, hyperparams):
+    set_seed(42)
+    
     # 1. Tokenisasi
     tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
     
@@ -51,7 +53,7 @@ def train_indoroberta(X_train, y_train, X_val, y_val, hyperparams):
     
     # 3. Training Arguments
     training_args = TrainingArguments(
-        output_dir='./results',
+        output_dir='./results_temp',
         num_train_epochs=hyperparams['epochs'],
         per_device_train_batch_size=hyperparams['batch_size'],
         per_device_eval_batch_size=hyperparams['batch_size'],
@@ -60,10 +62,17 @@ def train_indoroberta(X_train, y_train, X_val, y_val, hyperparams):
         weight_decay=0.01,
         logging_dir='./logs',
         
+        # Evaluasi & Saving
         logging_strategy="epoch",
         eval_strategy="epoch",
-        save_strategy="no",
-        use_cpu=True if device == "cpu" else False
+        save_strategy="epoch",
+        load_best_model_at_end=True,
+        metric_for_best_model="eval_loss",
+        greater_is_better=False,
+        save_total_limit=1,
+        
+        use_cpu=True if device == "cpu" else False,
+        report_to="none"
     )
     
     trainer = Trainer(
@@ -71,7 +80,8 @@ def train_indoroberta(X_train, y_train, X_val, y_val, hyperparams):
         args=training_args,
         train_dataset=train_dataset,
         eval_dataset=val_dataset,
-        compute_metrics=compute_metrics
+        compute_metrics=compute_metrics,
+        callbacks=[EarlyStoppingCallback(early_stopping_patience=3)]
     )
     
     # 4. Mulai Training

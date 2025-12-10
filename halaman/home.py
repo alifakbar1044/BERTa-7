@@ -31,18 +31,18 @@ def render_home_page():
     
     st.write("")
     
-    st.markdown("""
-    <div style="background-color:#E0F7FA; padding:20px; border-radius:10px; text-align:center; box-shadow: 2px 2px 5px #aaaaaa;">
-        <h3>📖 Artikel </h3>
-        <a href=# target="_blank">
-        <button style="background-color:#354687ff; color:white; padding:10px 20px; border:none; border-radius:5px; cursor:pointer;">
-            Buka Artikel
-        </button>
-        </a>
-    </div>
-    """, unsafe_allow_html=True)
+    # st.markdown("""
+    # <div style="background-color:#E0F7FA; padding:20px; border-radius:10px; text-align:center; box-shadow: 2px 2px 5px #aaaaaa;">
+    #     <h3>📖 Artikel </h3>
+    #     <a href=# target="_blank">
+    #     <button style="background-color:#354687ff; color:white; padding:10px 20px; border:none; border-radius:5px; cursor:pointer;">
+    #         Buka Artikel
+    #     </button>
+    #     </a>
+    # </div>
+    # """, unsafe_allow_html=True)
     
-    st.write("")
+    # st.write("")
     
     # Cara penggunaan singkat
     st.subheader("CARA PENGGUNAAN SINGKAT")

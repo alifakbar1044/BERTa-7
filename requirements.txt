@@ -12,7 +12,6 @@ seaborn
 scikit-learn
 imbalanced-learn
 wordcloud
-Sastrawi
 torch
 transformers
 accelerate

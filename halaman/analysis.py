@@ -156,8 +156,8 @@ def render_analysis_page():
                 val_ratio = 0.20
 
             # Split Data
-            X = df_clean['clean_content'].values
-            y = df_clean['label'].values
+            X = np.array(df_clean['clean_content'].tolist())
+            y = np.array(df_clean['label'].tolist())
             
             # Tahap 1: Pisahkan Data Test dari Total
             # (Misal 80:10:10 -> Ambil 10% untuk Test, sisa 90% masuk Train_Full)
